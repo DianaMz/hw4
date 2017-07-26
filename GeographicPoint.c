@@ -4,8 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define columnas 477
-#define filas 500
+int columnas = 744;
+int filas = 500;
 
 
 
@@ -15,36 +15,52 @@ int pos(int i, int j)
     return columnas*i + j;
 }
 
+
+
 void leer(void)
 {
   FILE *mapdata;
-  mapdata  = openf("map_data.txt", "r");
+  mapdata  = fopen("map_data.txt", "r");
 
-  int l = 500;
-	char linea_temp[l];
-	char *divlinea;
+  int l = 1500;
+	char buffer[l];
+	char *linea, *divlinea;
 
-  float matrix[filas][477]
+  float matrix[filas][columnas];
 
   int i, j;
 
-	for (i = 0; i < columnas; i++)
-	{
-			fgets(linea_temp, l, coordenadas);
-			divlinea = strtok(linea_temp, ",");
-			for (j = 0; j < filas; j++)
-			{
-					if(j != 0)
-					{
-							matrix[i][j-1] = atof(divlinea);
-					}
-					divlinea = strtok(NULL, ",");
-			}
-	}
-    //printf("%f\n", matrix);
+  while ((linea = fgets(buffer ,sizeof(buffer), mapdata)) != NULL)
+  {
+    //printf("La variable linea es %s\n", linea);
+    divlinea = strtok(linea, " ");
+    while (divlinea != NULL)
+    {
+      //printf("La variable en la posicion %d, %d es:%s\n", i,j,divlinea);
+      matrix[i][j] = atoi(divlinea);
+      divlinea = strtok(NULL, " ");
+      j++;
+    }
+    j=0;
+    i++;
+  }
 }
+
+
+
+int rand2() {
+
+  int randcol = rand() %columnas;
+  int randfil = rand() %filas;
+
+  printf("%d %d\n", randcol, randfil);
+}
+
+
 
 int main()
 {
+  leer();
+  rand2();
   return 0;
 }
