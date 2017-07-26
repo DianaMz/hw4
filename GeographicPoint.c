@@ -9,13 +9,6 @@ int filas = 500;
 
 
 
-//Convierte entre los indices (Pointers) de un arreglo lineal y de una matriz
-int pos(int i, int j)
-{
-    return columnas*i + j;
-}
-
-
 
 void leer(void)
 {
@@ -48,12 +41,17 @@ void leer(void)
 
 
 
-int rand2() {
-
+void rand2() {
   int randcol = rand() %columnas;
   int randfil = rand() %filas;
 
   printf("%d %d\n", randcol, randfil);
+}
+
+//Convierte entre los indices (Pointers) de un arreglo lineal y de una matriz
+int pos(int randfil, int randcol)
+{
+    return columnas*randfil + randcol;
 }
 
 
@@ -61,6 +59,11 @@ int rand2() {
 int main()
 {
   leer();
+
   rand2();
+
+  //pos();
+
+
   return 0;
 }
