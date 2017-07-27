@@ -55,19 +55,19 @@ int main() {
       printf("%d %d %f\n", randcol, randfil, matrix[randfil][randcol]);
       break;
     }
-    int r, i, j;
+  }
 
-    for (r = 0; r < columnas; r++) {
-      for (i = 0; i < r; i++) {
-        for (j = 0; j < r; j++) {
-          if (pow(matrix[i][j], 2.)+pow(matrix[i][j], 2.) < pow(r, 2.)) {
-            matrix[randfil+i][randcol+j];
-            printf("hola\n");
-          }
+  int r, i, j;
+
+  for (r = 0; r < columnas; r++) {
+    for (i = 0; i < r; i++) {
+      for (j = 0; j < r; j++) {
+        if (pow(matrix[i][j], 2.)+pow(matrix[i][j], 2.) < pow(r, 2.)) {
+          matrix[randfil+i][randcol+j];
+          printf("hola\n");
         }
       }
     }
-
   }
 
   return 0;
