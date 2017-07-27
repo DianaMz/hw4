@@ -9,11 +9,11 @@
 
 int columnas = 744;
 int filas = 500;
+
 int dcol = 200;
 int dfil = 200;
 
 float *matrix;
-//int *randcol, *randfil;
 
 
 
@@ -86,9 +86,10 @@ float radio(int fil, int col) {
   int r, i, j;
 
   for (r = 0; r < filas; r++) {
-    for (i = 0; -r < i < r; i++) {
-      for (j = 0; -r < j < r; j++) {
+    for (i = -r; i <= r; i++) {
+      for (j = -r; j <= r; j++) {
         if ( (pow(i, 2.) + pow(j, 2.)) < pow(r, 2) && matrix[pos(i+1,j+1)] ==1 ) {
+          printf("%d\n", r);
           return r;
         }
       }
@@ -98,21 +99,21 @@ float radio(int fil, int col) {
 
 
 
-int main()
-{
+int main() {
   leer();
 
-  // int i,
+  int randfil = rand2(filas);
+  int randcol = rand2(columnas);
 
-  // for (i = 0; i < count; i++) {
+  radio(randfil, randcol);
+
+  // int i,
+  //
+  // for (i = 0; i < columnas; i++) {
   //   /* code */
   // }
 
-  // rand2();
-  // srand48(1);
-  //
-  // float aa = drand48();
-  //
+
   // printf("%f\n", aa);
   //printf("%f\n", matrix[randfil][randcol]);
 
