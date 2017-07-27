@@ -43,7 +43,7 @@ int main() {
 
   for (i = 0; i < (columnas*filas); i++) {
     //Genera num aleatorios por columna y por fila
-    //srand(time(NULL));
+    srand(time(NULL));
     int randcol = rand() %columnas;
     int randfil = rand() %filas;
 
