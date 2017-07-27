@@ -41,23 +41,21 @@ int main() {
   }
 
 
-  //print los num aleatorios generados
-  printf("%d %d\n", randcol, randfil);
-
-  //print el valor en la matriz de acuerdo a las posiciones aleatorias
-  printf("%f\n", matrix[randfil][randcol]);
-
-
   for (i = 0; i < (columnas*filas); i++) {
     //Genera num aleatorios por columna y por fila
     //srand(time(NULL));
     int randcol = rand() %columnas;
     int randfil = rand() %filas;
 
+    // while (matrix[randfil][randcol] == 0) {
+    //   printf("%d %d\n", randcol, randfil);
+    //   printf("%f\n", matrix[randfil][randcol]);
+    // }
     if (matrix[randfil][randcol] == 0) {
-      printf("%d %d\n", randcol, randfil);
-      printf("%f\n", matrix[randfil][randcol]);
+      printf("%d %d %f\n", randcol, randfil, matrix[randfil][randcol]);
+      break;
     }
+
   }
 
   return 0;
