@@ -7,10 +7,12 @@
 int columnas = 744;
 int filas = 500;
 
+
 //int *randcol, *randfil;
 
 
-void leer(void)
+
+float leer()
 {
   FILE *mapdata;
   mapdata  = fopen("map_data.txt", "r");
@@ -37,26 +39,41 @@ void leer(void)
     j=0;
     i++;
   }
+  return matrix;
 }
 
 
 
-int rand2() {
-  int randcol = rand() %columnas;
+int rand2(int hasta) {
+  int randnum = rand() %hasta;
+
+  printf("%d \n", randnum);
+
+  //Genera num aleatorios por columna y por fila
+  // srand(time(NULL));
+  // int randcol = rand() %columnas;
+
+
   int randfil = rand() %filas;
 
-  return randcol, randfil;
 
-  //printf("%d %d\n", randcol, randfil);
+  return randnum;
 }
 
-//Convierte entre los indices (Pointers) de un arreglo lineal y de una matriz
-int pos()
-{
-  int randcol = rand() %columnas;
-  int randfil = rand() %filas;
-    return columnas*randfil + randcol;
+
+int valormatrix(float matrix, int randcol, int randfil){
+
+  printf("%d\n", matrix[randfil][randcol]);
+  return matrix[randfil][randcol];
 }
+
+// //Convierte entre los indices (Pointers) de un arreglo lineal y de una matriz
+// int pos()
+// {
+//   int randcol = rand() %columnas;
+//   int randfil = rand() %filas;
+//     return columnas*randfil + randcol;
+// }
 
 
 
@@ -64,10 +81,15 @@ int main()
 {
   leer();
 
-//  rand2();
+  rand2();
+  // srand48(1);
+  //
+  // float aa = drand48();
+  //
+  // printf("%f\n", aa);
+  //printf("%f\n", matrix[randfil][randcol]);
 
-  pos();
-
+  valormatrix(matrix, randcol, randfil);
 
   return 0;
 }
