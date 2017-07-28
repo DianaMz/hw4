@@ -10,8 +10,8 @@ int iteraciones = 1000;
 int columnas = 744;
 int filas = 500;
 
-int dcol = 200;
-int dfil = 200;
+int dcol = 120;
+int dfil = 120;
 
 float *matrix;
 
@@ -30,7 +30,6 @@ int pos(int fil, int col) {
   //cond periodica para filas
   fil = periodicidad(fil, filas);
 
-
   //cond periodica para columnas
   col = periodicidad(col, columnas);
 
@@ -46,13 +45,13 @@ void leer()
 
   int l = 1500;
 	char buffer[l];
-	char *linea, *divlinea;
+	char *divlinea;
 
   matrix = malloc(columnas*filas*sizeof(float));
 
-  int i, j;
+  int i=0, j=0;
 
-  while ((fgets(buffer ,sizeof(buffer), mapdata)) != NULL)
+  while ((fgets(buffer, l, mapdata)) != NULL)
   {
     //printf("La variable linea es %s\n", linea);
     divlinea = strtok(buffer, " ");
@@ -81,13 +80,13 @@ int rand2(int hasta) {
 
 
 
-float radio(int fil, int col) {
+int radio(int fil, int col) {
   int r, i, j;
 
-  for (r = 0; r < filas; r++) {
+  for (r = 1; r < filas; r++) {
     for (i = -r; i <= r; i++) {
       for (j = -r; j <= r; j++) {
-        if ( (pow(i, 2.) + pow(j, 2.)) <= pow(r, 2) && matrix[pos(fil+i, col+j)] ==1 ) {
+        if ( (pow(i, 2.) + pow(j, 2.) <= pow(r, 2.)) && (matrix[pos(fil+i, col+j)] == 1 )) {
           return r;
         }
       }
@@ -115,7 +114,7 @@ int main() {
 
   r = radio(randfil, randcol);
 
-  int i, j;
+  int i;
 
   float alpha, beta;
 
@@ -133,21 +132,21 @@ int main() {
          r_nuevo = radio(randfil_nuevo, randcol_nuevo);
          alpha = exp(-r + r_nuevo);
 
-         if (alpha > 1){
-           randfil = randfil_nuevo;
-           randcol = randcol_nuevo;
-           r = r_nuevo;
-         }
+        //  if (alpha >= 1){
+        //    randfil = randfil_nuevo;
+        //    randcol = randcol_nuevo;
+        //    r = r_nuevo;
+        //  }
 
-         else{
+        //  else{
            beta = rand()/(float) RAND_MAX;
-           if(alpha > beta)
+           if(alpha >= beta)
            {
              randfil = randfil_nuevo;
              randcol = randcol_nuevo;
              r = r_nuevo;
            }
-         }
+        //  }
 
          if(r > maxr)
          {
@@ -157,7 +156,10 @@ int main() {
          }
   }
 
-  printf("%d %d %d \n", maxfil, maxcol, maxr);
+  printf("las coordenadas del punto mas alejado son: %f %f\n", maxcol*360.0/columnas-180, 90-maxfil*180.0/filas);
+  FILE *archivo;
+  archivo = fopen("cadena.txt", "w");
+  fprintf(archivo, "%d %d %d \n", maxfil, maxcol, maxr);
 
   return 0;
 }
