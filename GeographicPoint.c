@@ -5,7 +5,7 @@
 #include <string.h>
 #include <time.h>
 
-
+int iteraciones = 1000;
 
 int columnas = 744;
 int filas = 500;
@@ -15,25 +15,24 @@ int dfil = 200;
 
 float *matrix;
 
-
+int periodicidad(int indice, int maximo)
+{
+  if (indice < 0) {
+    indice = maximo + indice%maximo;
+  }
+  if (indice >= maximo) {
+    indice = indice%maximo;
+  }
+  return indice;
+}
 
 int pos(int fil, int col) {
   //cond periodica para filas
-  if (fil < 0) {
-    fil = filas + fil;
-  }
-  if (fil >= filas) {
-    fil = fil%filas;
-  }
+  fil = periodicidad(fil, filas);
+
 
   //cond periodica para columnas
-  if (col < 0) {
-    col = columnas + col;
-  }
-  if (col >= columnas) {
-    col = col%columnas;
-  }
-
+  col = periodicidad(col, columnas);
 
   return columnas*fil + col;
 }
@@ -53,14 +52,14 @@ void leer()
 
   int i, j;
 
-  while ((linea = fgets(buffer ,sizeof(buffer), mapdata)) != NULL)
+  while ((fgets(buffer ,sizeof(buffer), mapdata)) != NULL)
   {
     //printf("La variable linea es %s\n", linea);
-    divlinea = strtok(linea, " ");
+    divlinea = strtok(buffer, " ");
     while (divlinea != NULL)
     {
       //printf("La variable en la posicion %d, %d es:%s\n", i,j,divlinea);
-      matrix[pos(i,j)] = atoi(divlinea);
+      matrix[pos(i,j)] = atof(divlinea);
       divlinea = strtok(NULL, " ");
       j++;
     }
@@ -72,7 +71,7 @@ void leer()
 
 
 int rand2(int hasta) {
-  srand(time(NULL));
+    // srand(time(NULL));
   int randnum = rand() %hasta;
 
   //printf("%d \n", randnum);
@@ -88,8 +87,7 @@ float radio(int fil, int col) {
   for (r = 0; r < filas; r++) {
     for (i = -r; i <= r; i++) {
       for (j = -r; j <= r; j++) {
-        if ( (pow(i, 2.) + pow(j, 2.)) < pow(r, 2) && matrix[pos(i+1,j+1)] ==1 ) {
-          printf("%d\n", r);
+        if ( (pow(i, 2.) + pow(j, 2.)) <= pow(r, 2) && matrix[pos(fil+i, col+j)] ==1 ) {
           return r;
         }
       }
@@ -100,22 +98,66 @@ float radio(int fil, int col) {
 
 
 int main() {
+  srand(time(NULL));
+
   leer();
 
   int randfil = rand2(filas);
   int randcol = rand2(columnas);
 
-  radio(randfil, randcol);
+  int randfil_nuevo, randcol_nuevo, r, r_nuevo;
 
-  // int i,
-  //
-  // for (i = 0; i < columnas; i++) {
-  //   /* code */
-  // }
+  while(matrix[pos(randfil, randcol)] == 1)
+  {
+    randfil = rand2(filas);
+    randcol = rand2(columnas);
+  }
+
+  r = radio(randfil, randcol);
+
+  int i, j;
+
+  float alpha, beta;
 
 
-  // printf("%f\n", aa);
-  //printf("%f\n", matrix[randfil][randcol]);
+  int maxfil = 0, maxcol = 0, maxr = 0;
+
+ for (i = 0; i < iteraciones; i++) {
+   randfil_nuevo = periodicidad(randfil + (1 - 2*rand()/(float) RAND_MAX)*dfil, filas);
+   randcol_nuevo = periodicidad(randcol + (1 - 2*rand()/(float) RAND_MAX)*dcol, columnas);
+   while(matrix[pos(randfil_nuevo, randcol_nuevo)] == 1)
+   {
+     randfil_nuevo = periodicidad(randfil + (1 - 2*rand()/(float) RAND_MAX)*dfil, filas);
+     randcol_nuevo = periodicidad(randcol + (1 - 2*rand()/(float) RAND_MAX)*dcol, columnas);
+   }
+         r_nuevo = radio(randfil_nuevo, randcol_nuevo);
+         alpha = exp(-r + r_nuevo);
+
+         if (alpha > 1){
+           randfil = randfil_nuevo;
+           randcol = randcol_nuevo;
+           r = r_nuevo;
+         }
+
+         else{
+           beta = rand()/(float) RAND_MAX;
+           if(alpha > beta)
+           {
+             randfil = randfil_nuevo;
+             randcol = randcol_nuevo;
+             r = r_nuevo;
+           }
+         }
+
+         if(r > maxr)
+         {
+           maxr = r;
+           maxfil = randfil;
+           maxcol = randcol;
+         }
+  }
+
+  printf("%d %d %d \n", maxfil, maxcol, maxr);
 
   return 0;
 }
