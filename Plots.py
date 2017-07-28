@@ -15,5 +15,4 @@ ax.add_artist(circle)
 
 plt.xlabel("Longitud")
 plt.ylabel("Latitud")
-plt.show()
-# plt.savefig("PuntoNemo.pdf")
+plt.savefig("PuntoNemo.pdf")
